@@ -43,7 +43,12 @@ int main() {
 
     // 5. Ontvang gegevens van de server (reverse attack)
     while ((ontvangen_bytes = recv(sock, buffer, BUFFER_SIZE, 0)) > 0) {
+        printf("Ontvangen %d bytes\n", ontvangen_bytes);
         totaal_ontvangen += ontvangen_bytes;
+        if (totaal_ontvangen >= 1024 * 1024*10) { // 10 MB limiet
+            printf("Maximale buffer bereikt, stoppen met ontvangen.\n");
+            break;
+        }
     }
 
     // 6. Toon resultaat
