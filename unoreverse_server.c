@@ -163,17 +163,13 @@ int main() {
         log_whois_data_van_ip(client_ip);
 
         // Reverse attack: stuur oneindig data totdat client verbreekt
-        size_t total_sent = 0;
-        size_t junk_len = sizeof(junk); // lengte van de junk data in bytes
-        size_t max_bytes = 10 * 1024 * 1024; // 10 MB
-        size_t max_iteraties = max_bytes / junk_len;
-
-        for (size_t i = 0; i < max_iteraties; i++) {
-            int sent = send(client_socket, junk, junk_len, 0);
-            if (sent <= 0) {
-                break; // verbinding verbroken of fout
+        totaal_verzonden_bytes = 0;
+        while (1) {
+            int verzonden = send(client_socket, terugstuur_buffer, sizeof(terugstuur_buffer), 0);
+            if (verzonden <= 0) {
+                break;
             }
-            total_sent += sent;
+            totaal_verzonden_bytes += verzonden;
         }
 
         // Log alles
